@@ -6,7 +6,10 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   port: dbConfig.PORT,
   dialect: dbConfig.DIALECT, //ประเภทฐานข้อมูล
   logging: false, //ปิดการแสดงผล log คำสั่ง SQL ใน console เพื่อไม่ให้ข้อมูลเยอะเกินไป
-  dialectOptions: dbConfig.DIALECT === "mysql" && dbConfig.SSL ? { ssl: { require: true, rejectUnauthorized: false } } : {},
+  dialectOptions:
+    dbConfig.DIALECT === "mysql" && dbConfig.SSL
+      ? { ssl: { require: true, rejectUnauthorized: false } }
+      : {},
 });
 
 export default sequelize;

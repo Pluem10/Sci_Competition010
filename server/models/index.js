@@ -1,33 +1,28 @@
 import sequelize from "./db.js";
 import Sequelize from "sequelize";
-
 import User from "./user.models.js";
-import Role from "./role.models.js";
+import Judge from "./judge.model.js";
+import Teacher from "./teacher.model.js";
+import Admin from "./admin.model.js";
+import VerificationToken from "./verifcationToken.model.js";
+import Activity from "./activity.model.js";
 
 const db = {};
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 db.User = User;
-db.Role = Role;
+db.Judge = Judge;
+db.Teacher = Teacher;
+db.Admin = Admin;
+db.VerificationToken = VerificationToken;
+db.Activity = Activity;
 
-// Associations
-// User <-> Role (Many-to-Many)
-db.User.belongsToMany(db.Role, {
-  through: "user_roles",
-  foreignKey: "userId",
-  otherKey: "roleId",
-});
-db.Role.belongsToMany(db.User, {
-  through: "user_roles",
-  foreignKey: "roleId",
-  otherKey: "userId",
-});
+// Associations การเชื่อมความสัมพันธ์ระหว่างตาราง
 
-// หากมี Activity, Restaurant, หรือโมเดลอื่น ๆ ให้เพิ่มความสัมพันธ์ที่นี่ เช่น
-// import Activity from "./activity.model.js";
-// db.Activity = Activity;
-// db.User.hasMany(db.Activity, { foreignKey: "createdBy" });
-// db.Activity.belongsTo(db.User, { foreignKey: "createdBy" });
+// User กับ VerificationToken
+db.VerificationToken.belongTo(db.User, { foreignKey: "userId" });
+
+db.User.belongTo(db.VerificationToken, { foreignKey: "userId" });
 
 export default db;
