@@ -1,5 +1,6 @@
-import Activity from "../models/activity.model";
+import Activity from "../models/activity.model.js";
 const activityControllers = {};
+
 //create activity
 activityControllers.create = async (req, res) => {
   try {
@@ -120,26 +121,27 @@ activityControllers.delete = async (req, res) => {
 };
 
 activityControllers.serchActivity = async (req, res) => {
-    try{const { name ,type,level, status} = req.query;
+  try {
+    const { name, type, level, status } = req.query;
     const whereClause = {};
     if (name) {
-        whereClause.name = { [Op.like]: `%${name}%` };
+      whereClause.name = { [Op.like]: `%${name}%` };
     }
     if (type) {
-        whereClause.type = type;
+      whereClause.type = type;
     }
     if (level) {
-        whereClause.level = level;
+      whereClause.level = level;
     }
     if (status) {
-        whereClause.status = status;
+      whereClause.status = status;
     }
     const activities = await Activity.findAll({ where: whereClause });
     res.status(200).json(activities);
-}catch (err) {
+  } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Internal server error" });
   }
-}
+};
 
 export default activityControllers;

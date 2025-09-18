@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "./db.js";
-import bcrypt, { hash } from "bcrypt";
+import bcrypt from "bcryptjs";
 
 const User = sequelize.define(
   "User",
@@ -9,6 +9,7 @@ const User = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
+      autoIncrement: true,
     },
     name: {
       type: DataTypes.STRING,
@@ -30,14 +31,25 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    // teacher attribute
+    school: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      
+    },
+
     isVerified: {
       type: DataTypes.BOOLEAN,
-      default: false,
+      defaultValue: false,
       allowNull: false,
     },
   },
   {
-    hook: {
+    hooks: {
       beforeCreate: async (user) => {
         if (user.password) {
           const salt = await bcrypt.genSalt(10);

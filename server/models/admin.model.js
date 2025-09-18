@@ -1,4 +1,4 @@
-import User from "./user.model";
+import User from "./user.model.js";
 import { DataTypes } from "sequelize";
 
 const Admin = User.init(

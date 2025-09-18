@@ -1,20 +1,12 @@
 import express from "express";
+import authControllers from "../controllers/auth.controllers.js";
+
 const router = express.Router();
-import activityControllers from "../controllers/activity.controllers.js";
 
-// POST http://localhost:5000/api/v1/activity
-router.post("/", activityControllers.create);
+// POST http://localhost:5000/api/v1/auth/signin
+router.post("/signup", authControllers.signUp);
 
-// GET all activities
-router.get("/", activityControllers.getAll);
-
-// GET activity by id
-router.get("/:id", activityControllers.getById);
-
-// PUT update activity
-router.put("/:id", activityControllers.update);
-
-// DELETE activity
-router.delete("/:id", activityControllers.delete);
+// GET http://localhost:5000/api/v1/auth/signin
+router.get("/verify/:token", authControllers.verifyEmail);
 
 export default router;

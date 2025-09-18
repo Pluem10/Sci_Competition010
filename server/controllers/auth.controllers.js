@@ -56,6 +56,7 @@ const signUp = async (req, res) => {
           token: token,
           userId: user.id,
           expiresAt: Date.now() + 24 * 60 * 60 * 1000, // 1 วัน
+          isVerified: false,
         });
       } catch (error) {}
     }
@@ -79,4 +80,44 @@ const signUp = async (req, res) => {
   }
 };
 
-export default { signUp };
+const verifyEmail = async (req, res) => {
+  const { token } = req.params;
+  if (!token) {
+    return res.status(400).send({ message: "Token is missing ! " });
+  }
+  try {
+    const verificationToken = await db.VerificationToken.findOne({
+      where: { token: token },
+    });
+    if (!verificationToken) {
+      return res
+        .status(404)
+        .send({ message: "โทเคนไม่วาลิสส invalid verification" });
+    }
+    // ตรวจสอบว่าโทเคนหมดอายุหรือไม่
+    if (new Date() > verificationToken.expiredAt) {
+      await db.VerificationToken.detroy();
+      return res.status(400).send({ message: "โทเคนหมดอายุเเล้ว expired" });
+    }
+    const user = await User.findByPk(verificationToken.userId);
+    if (!user) {
+      return res.status(404).send({ message: "ไม่พบผู้ใช้ user not found" });
+    }
+    await user.update({ isVerified: true });
+    await db.VerificationToken.destroy();
+    //return wed view
+    const htmlPath = path.join(process.cwd(), "views", "email-verified.html");
+    res.sendFile(htmlPath);
+  } catch (error) {
+    return res.status(500).send({
+      message: error.message || "Some error occurred while verifying the user",
+    });
+  }
+};
+
+const authControllers = {
+  signUp,
+  verifyEmail,
+};
+
+export default { signUp, verifyEmail };

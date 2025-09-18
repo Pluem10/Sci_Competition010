@@ -1,5 +1,4 @@
-import { DataTypes } from "sequelize";
-import User from "./user.model";
+import User from "./user.model.js";
 
 const Judge = User.init(
   {},

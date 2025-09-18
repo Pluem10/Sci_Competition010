@@ -1,8 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-
 const config = {
-  secret: process.env.JWT_SECRET || "default_jwt_secret_key",
-  expiresIn: process.env.JWT_EXPIRES_IN || "1d",
+  secret: process.env.JWT_SECRET || "Nitiphon",
 };
 export default config;

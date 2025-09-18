@@ -1,12 +1,12 @@
 import { DataTypes } from "sequelize";
-import User from "./user.model";
-import sequelize from "./db";
+import User from "./user.model.js";
+import sequelize from "./db.js";
 
 const VerificationToken = sequelize.define("VerificationToken", {
   id: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: DataTypes.INTEGER,
     primaryKey: true,
+    autoIncrement: true,
   },
   token: {
     type: DataTypes.STRING,
@@ -17,11 +17,11 @@ const VerificationToken = sequelize.define("VerificationToken", {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: user,
+      model: User,
       key: "id",
     },
   },
-  expiresAt: {
+  expiredAt: {
     type: DataTypes.DATE,
     allowNull: false,
   },

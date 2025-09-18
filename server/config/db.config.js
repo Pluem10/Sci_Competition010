@@ -2,13 +2,13 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const dbConfig = {
-  HOST: process.env.DB_HOST || "localhost",
-  USER: process.env.DB_USER || "root",
-  PASSWORD: process.env.DB_PASSWORD || "",
-  DB: process.env.DB_NAME || "testdb",
-  PORT: process.env.DB_PORT || 3306,
-  DIALECT: process.env.DB_DIALECT || "mysql",
-  SSL: process.env.DB_SSL === "true",
+  HOST: process.env.HOST,
+  USER: process.env.USER,
+  PASSWORD: process.env.PASSWORD,
+  DB: process.env.DB,
+  PORT: process.env.DBPORT,
+  DIALECT: process.env.DIALECT,
+  SSL: process.env.DB_SSL,
   pool: {
     max: 5,
     min: 0,

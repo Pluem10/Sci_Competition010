@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ยืนยันอีเมลสำเร็จ - การแข่งขันวันวิทยาศาสตร์</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        font-family: "Sarabun", sans-serif;
+        background: linear-gradient(135deg, #1a237e, #0d47a1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        padding: 40px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        max-width: 600px;
+        width: 90%;
+        animation: fadeIn 1s ease-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      h1 {
+        color: #1a237e;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+      }
+      .success-icon {
+        width: 100px;
+        height: 100px;
+        background: #4caf50;
+        border-radius: 50%;
+        margin: 0 auto 30px;
+        position: relative;
+        animation: scaleIn 0.5s ease-out;
+      }
+      @keyframes scaleIn {
+        from {
+          transform: scale(0);
+        }
+        to {
+          transform: scale(1);
+        }
+      }
+      .success-icon:after {
+        content: "";
+        position: absolute;
+        width: 50px;
+        height: 25px;
+        border: 8px solid white;
+        border-top: none;
+        border-right: none;
+        transform: rotate(-45deg);
+        top: 30px;
+        left: 25px;
+      }
+      p {
+        color: #424242;
+        font-size: 1.2em;
+        line-height: 1.6;
+        margin-bottom: 30px;
+      }
+      .button {
+        display: inline-block;
+        background: #1a237e;
+        color: white;
+        padding: 15px 40px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-size: 1.1em;
+        transition: all 0.3s ease;
+      }
+      .button:hover {
+        background: #0d47a1;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="success-icon"></div>
+      <h1>ยืนยันอีเมลสำเร็จ!</h1>
+      <p>
+        ขอบคุณที่ลงทะเบียนเข้าร่วมการแข่งขันวันวิทยาศาสตร์<br />
+        ตอนนี้ท่านสามารถเข้าสู่ระบบและเริ่มใช้งานได้ทันที
+      </p>
+      <a href="http://localhost:5173/login" class="button">เข้าสู่ระบบ</a>
+    </div>
+  </body>
+</html>
