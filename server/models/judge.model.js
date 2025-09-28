@@ -10,6 +10,8 @@ const Judge = User.init(
         },
       },
     },
+  },
+  {
     hooks: {
       beforeCreate: (judge) => {
         judge.type = "judge";
@@ -17,5 +19,4 @@ const Judge = User.init(
     },
   }
 );
-
 export default Judge;

@@ -1,15 +1,28 @@
 import { Sequelize } from "sequelize";
 import dbConfig from "../config/db.config.js";
-
+// console.log(dbConfig);
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   port: dbConfig.PORT,
-  dialect: dbConfig.DIALECT, //ประเภทฐานข้อมูล
-  logging: false, //ปิดการแสดงผล log คำสั่ง SQL ใน console เพื่อไม่ให้ข้อมูลเยอะเกินไป
-  dialectOptions:
-    dbConfig.DIALECT === "mysql" && dbConfig.SSL
-      ? { ssl: { require: true, rejectUnauthorized: false } }
-      : {},
+  dialect: dbConfig.dialect,
+  logging: false,
+  omitNull: true,
+  // dialectOptions: {
+  //   ssl: {
+  //     required: true,
+  //     rejectUnauthorized: false,
+  //   },
+  // },
 });
 
+const testConnection = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("Connection has been etablished successfully");
+  } catch (error) {
+    console.log("Unable to connect to the database", error);
+  }
+};
+
+testConnection();
 export default sequelize;

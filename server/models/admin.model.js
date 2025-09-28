@@ -1,9 +1,9 @@
 import User from "./user.model.js";
-import { DataTypes } from "sequelize";
 
 const Admin = User.init(
   {},
   {
+
     scopes: {
       defaultScope: {
         where: {
@@ -11,6 +11,8 @@ const Admin = User.init(
         },
       },
     },
+  },
+  {
     hooks: {
       beforeCreate: (admin) => {
         admin.type = "admin";
@@ -18,5 +20,4 @@ const Admin = User.init(
     },
   }
 );
-
 export default Admin;

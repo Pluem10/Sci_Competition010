@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import sequelize from "./db.js";
-
 const Activity = sequelize.define("activity", {
   id: {
     type: DataTypes.INTEGER,
@@ -12,8 +11,8 @@ const Activity = sequelize.define("activity", {
     allowNull: false,
   },
   description: {
-    type: DataTypes.TEXT,
-    allowNull: true,
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   type: {
     type: DataTypes.STRING,
@@ -26,6 +25,7 @@ const Activity = sequelize.define("activity", {
   team_size: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    min: 1,
   },
   date: {
     type: DataTypes.DATE,
@@ -54,20 +54,14 @@ const Activity = sequelize.define("activity", {
   contact_email: {
     type: DataTypes.STRING,
     allowNull: false,
-    require: true,
     match: [
-      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-      "please enter a valid email address",
+      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+      "Please enter a valid email",
     ],
   },
   status: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: DataTypes.ENUM("draft", "open", "closed", "in_progress", "completed"),
+    defaultValue: "draft",
   },
-  //   status: {
-  //     type: DataTypes.STRING,
-  //     allowNull: false,
-  //   },
 });
-
 export default Activity;

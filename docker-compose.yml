@@ -4,12 +4,12 @@ services:
       context: ./server
       dockerfile: Dockerfile.server
     ports:
-      - "5000:5000" #ซ้าย pc ขวา server
-    volumes: #volumes คือ ตัวจัดการข้อมูล
+      - "5000:5000"
+    volumes:
       - "./server:/app"
       - "/app/node_modules"
-    command: nodemon --legacy-watch index.js #ใช้ nodemon ในการรัน server เเละ
-    restart: always #ถ้า server หยุดจะทำการ restart อัตโนมัติ
+    command: nodemon --legacy-watch index.js
+    restart: always # or 'on-failure' or 'unless-stopped'
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/app_db
       - HOST=db
@@ -20,7 +20,6 @@ services:
       - SERVER_PORT=5000
     depends_on:
       - db
-
   client:
     build:
       context: ./client
@@ -34,7 +33,6 @@ services:
       - CHOKIDAR_USEPOLLING=true
     depends_on:
       - server
-
   db:
     image: postgres:16
     restart: always
@@ -46,6 +44,5 @@ services:
       - POSTGRES_DB=app_db
     volumes:
       - pgdata:/var/lib/postgresql/data
-
 volumes:
   pgdata:

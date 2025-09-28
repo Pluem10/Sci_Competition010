@@ -2,40 +2,44 @@ import express from "express";
 const app = express();
 import dotenv from "dotenv";
 dotenv.config();
+const NODE_ENV = process.env.NODE_ENV || "development";
 const PORT = process.env.PORT || 5000;
-import restaurantRouter from "./routers/restaurant.router.js";
+const FRONTEND_URL = process.env.FRONTEND_URL;
+import ActivityRouter from "./routers/activity.router.js";
 import authRouter from "./routers/auth.router.js";
-
 import cors from "cors";
 app.use(
   cors({
-    origin: ["http://localhost:5173", "127.0.0.1:5173"],
+    origin: ["http://localhost:5173", "127.0.0.1:5173", FRONTEND_URL],
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "x-access-token"],
   })
 );
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+console.log("##################################");
 import db from "./models/index.js";
-const Role = db.Role;
-const initRole = () => {
-  Role.create({ id: 1, name: "user" });
-  Role.create({ id: 2, name: "moderator" });
-  Role.create({ id: 3, name: "admin" });
+const initDatabase = async () => {
+  try {
+    await db.sequelize.authenticate();
+    console.log("Database connection established successfully");
+    // if (NODE_ENV === "development") {
+    await db.sequelize.sync({ alter: true });
+    console.log("database Synced in development mode");
+    // }
+  } catch (error) {
+    console.error("Unable to connect to database", error);
+  }
 };
-// db.sequelize.sync({ force: true }).then(() => {
-//   initRole();
-//   console.log("Drop and sync");
-// });
+initDatabase();
 
 app.get("/", (req, res) => {
-  res.send("Restaurant Restful API ");
+  res.send("SCI Competition Restful API Completed");
 });
 
-//use router
-app.use("/api/v1/restaurant", restaurantRouter);
+//use routers
+app.use("/api/v1/activities", ActivityRouter);
 app.use("/api/v1/auth", authRouter);
 
 app.listen(PORT, () => {

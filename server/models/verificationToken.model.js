@@ -1,8 +1,7 @@
 import { DataTypes } from "sequelize";
-import User from "./user.model.js";
 import sequelize from "./db.js";
 
-const VerificationToken = sequelize.define("VerificationToken", {
+const VerificationToken = sequelize.define("verificationToken", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -16,8 +15,8 @@ const VerificationToken = sequelize.define("VerificationToken", {
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    references: {
-      model: User,
+    reference: {
+      model: "users",
       key: "id",
     },
   },

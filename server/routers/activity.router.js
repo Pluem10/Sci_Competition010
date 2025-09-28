@@ -1,19 +1,24 @@
 import express from "express";
 const router = express.Router();
-import activityControllers from "../controllers/activity.controllers.js";
+import activityController from "../controllers/activity.controller.js";
+import AuthMiddleware from "../middleware/authJwt.js";
 
-router.post("/",  activityControllers.create);
+// Create a new activity สร้างกิจกรรมใหม่
+router.post("/",[AuthMiddleware.verifyToken, AuthMiddleware.isManager],activityController.createActivity);
 
-// GET all activities
-router.get("/",  activityControllers.getAll);
+// Get all activities เรียกดูกิจกรรมทั้งหมด
+router.get("/", activityController.getAllActivities);
 
-// GET activity by id
-router.get("/:id", activityControllers.getById);
+// Get activity by ID เรียกดูข้อมูลกิจกรรมตาม ID
+router.get("/:id", activityController.getActivityById);
 
-// PUT update activity
-router.put("/:id",  activityControllers.update);
+// Update activity by ID แก้ไขข้อมูลกิจกรรมตาม ID
+router.put("/:id",[AuthMiddleware.verifyToken, AuthMiddleware.isManager],activityController.updateActivity);
 
-// DELETE activity
-router.delete("/:id", activityControllers.delete);
+// Delete activity by ID ลบข้อมูลกิจกรรมตาม ID
+router.delete("/:id",[AuthMiddleware.verifyToken, AuthMiddleware.isManager],activityController.deleteActivity);
+
+// Search activities ค้นหากิจกรรม
+router.get("/search", activityController.searchActivities);
 
 export default router;

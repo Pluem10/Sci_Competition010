@@ -1,39 +1,67 @@
-// import jwt from "jsonwebtoken";
-// import db from "../models/index.js";
-// import authconfig from "../config/auth.config.js";
+import jwt from "jsonwebtoken";
+import authConfig from "../config/auth.config.js";
+import db from "../models/index.js";
+const User = db.User;
 
-// const User = db.User;
+const verifyToken = (req, res, next) => {
+  let token = req.headers["x-access-token"];
+  if (!token) {
+    return res.status(403).send({ message: "No Token Provided!" });
+  }
+  jwt.verify(token, authConfig.secret, (err, decoded) => {
+    if (err) {
+      return res.status(401).send({ message: "Unauthorized!" });
+    }
+    req.username = decoded.username;
+    next();
+  });
+};
 
-// const verifyToken = (req, res, next) => {
-//   let token = req.headers["x-access-token"];
-//   if (!token) {
-//     return res.status(403).send({ message: "No token provided!" });
-//   }
-//   jwt.verify(token, authconfig.secret, (err, decoded) => {
-//     if (err) {
-//       return res.status(401).send({ message: "Unauthorized!" });
-//     }
-//     req.userId = decoded.id;
-//     req.username = decoded.username;
-//     next();
-//   });
-// };
+const isAdmin = (req, res, next) => {
+  User.findByPk(req.username).then((user) => {
+    user.getRoles().then((roles) => {
+      for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === "admin") {
+          next();
+          return;
+        }
+      }
+      return res
+        .status(401)
+        .send({ message: "Unauthorized access, require admin role!" });
+    });
+  });
+};
+const isModOrAdmin = (req, res, next) => {
+  User.findByPk(req.username).then((user) => {
+    user.getRoles().then((roles) => {
+      for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === "admin" || roles[i].name === "moderator") {
+          next();
+          return;
+        }
+      }
+      return res
+        .status(401)
+        .send({ message: "Unauthorized access, require admin role!" });
+    });
+  });
+};
+const isManager = (req, res, next) => {
+  User.findByPk(req.username).then((user) => {
+    user.getRoles().then((roles) => {
+      for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === "manager") {
+          next();
+          return;
+        }
+      }
+      return res
+        .status(401)
+        .send({ message: "Unauthorized access, require manager role!" });
+    });
+  });
+};
 
-// const IsAdmin = async (req, res, next) => {
-//   try {
-//     const user = await User.findByPk(req.userId);
-//     if (!user) return res.status(404).send({ message: "User not found!" });
-//     const roles = await user.getRoles();
-//     for (let i = 0; i < roles.length; i++) {
-//       if (roles[i].name === "admin") {
-//         return next();
-//       }
-//     }
-//     return res.status(401).send({ message: "Require Admin Role!" });
-//   } catch (err) {
-//     return res.status(500).send({ message: err.message });
-//   }
-// };
-
-// const authjwt = { verifyToken, IsAdmin };
-// export default authjwt;
+const authJwt = { verifyToken, isAdmin, isModOrAdmin, isManager };
+export default authJwt;

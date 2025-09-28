@@ -1,7 +1,6 @@
 import { DataTypes } from "sequelize";
 import User from "./user.model.js";
-import sequelize from "./db.js";
-// init model Teacher โดยสืบทอดมาจาก User
+
 const Teacher = User.init(
   {
     school: {
@@ -14,7 +13,6 @@ const Teacher = User.init(
     },
   },
   {
-    sequelize,
     scopes: {
       defaultScope: {
         where: {
@@ -22,8 +20,6 @@ const Teacher = User.init(
         },
       },
     },
-  },
-  {
     hooks: {
       beforeCreate: (teacher) => {
         teacher.type = "teacher";
@@ -31,5 +27,4 @@ const Teacher = User.init(
     },
   }
 );
-
 export default Teacher;

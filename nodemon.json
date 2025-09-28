@@ -1,6 +1,6 @@
 {
-  "watch": ["index.js", "routes/", "models/"],
+  "watch": ["."],
   "ext": "js,json",
-  "ignore": ["node_modules/"],
+  "ignore": ["node_modules"],
   "legacyWatch": true
 }

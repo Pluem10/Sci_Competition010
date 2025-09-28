@@ -1,13 +1,11 @@
 import { DataTypes } from "sequelize";
 import sequelize from "./db.js";
-import bcrypt from "bcryptjs";
-
+import becrypt from "bcryptjs";
 const User = sequelize.define(
-  "User",
+  "user",
   {
     id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
@@ -31,7 +29,7 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    // teacher attribute
+    // Teacher attribute
     school: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -39,9 +37,7 @@ const User = sequelize.define(
     phone: {
       type: DataTypes.STRING,
       allowNull: true,
-      
     },
-
     isVerified: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
@@ -52,20 +48,21 @@ const User = sequelize.define(
     hooks: {
       beforeCreate: async (user) => {
         if (user.password) {
-          const salt = await bcrypt.genSalt(10);
-          user.password = await bcrypt.hash(user.password, salt);
+          const salt = await becrypt.genSalt(10);
+          user.password = await becrypt.hash(user.password, salt);
         }
-        beforeUpdate: async (user) => {
-          if (user.changed("password")) {
-            const salt = await bcrypt.genSalt(10);
-            user.password = await bcrypt.hash(user.password, salt);
-          }
-        };
+      },
+      beforeUpdate: async (user) => {
+        if (user.changed("password")) {
+          const salt = await becrypt.genSalt(10);
+          user.password = await becrypt.hash(user.password, salt);
+        }
       },
     },
   }
 );
+
 User.prototype.comparePassword = async function (candidatePassword) {
-  return await bcrypt.compare(candidatePassword, this.password);
+  return await becrypt.compare(candidatePassword, this.password);
 };
 export default User;
