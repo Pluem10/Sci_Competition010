@@ -129,7 +129,7 @@ const verifyEmail = async (req, res) => {
     //return web view
     const htmlPath = path.join(
       process.cwd(),
-      "views",
+      "view",
       "verification-success.html"
     );
     res.sendFile(htmlPath);

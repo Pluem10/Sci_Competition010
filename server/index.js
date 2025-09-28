@@ -18,7 +18,7 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-console.log("##################################");
+console.log("############################################");
 import db from "./models/index.js";
 const initDatabase = async () => {
   try {
