@@ -29,7 +29,7 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    // Teacher attribute
+    // Teacher attribute 
     school: {
       type: DataTypes.STRING,
       allowNull: true,

@@ -169,7 +169,7 @@ const signIn = async (req, res) => {
     }
 
     const token = jwt.sign({ id: user.id }, authConfig.secret, {
-      expiresIn: 24 * 60 * 60 * 1000, // 86400 = 24h
+      expiresIn: 24*60*60, // 24 hours
     });
     // const userData = {
     //   id: user.id,
